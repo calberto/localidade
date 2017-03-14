@@ -24,7 +24,7 @@
   </div>
   <div class="field">
     <%= f.label :sigla %>
-    <%= f.text_field :sigla, :class => 'form-control', style="width: 200px"  %>
+    <%= f.text_field :sigla, :class => 'form-control', :style=>"width: 200px"  %>
   </div>
   
   <div class="field">
