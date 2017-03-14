@@ -1,0 +1,16 @@
+# Place all the behaviors and hooks related to the matching controller here.
+# All this logic will automatically be available in application.js.
+# You can use CoffeeScript in this file: http://coffeescript.org/
+jquery ->
+ $('#person_state_id').parent().hide()
+ estados = #('#person_state_id').html()
+$('#person_country_id').change ->
+  patria = $('#person_country_id :selected').text()
+  escoped_country = patria.replace(/([ #;&,.+*~\':"!^$[\]()=>|\/@])/g, '\\$1')
+  options = $(estados).filter('optgroup[label= "#{escoped_country}"]').html()
+    if options
+      $('#person_state_id').html(options)
+      $('#person_state_id').parent().show()
+    else
+      $('#person-state_id').emptuy()
+      $('#person-state_id').parent().hide()

@@ -1,0 +1,13 @@
+Rails.application.routes.draw do
+
+  resources :cidades
+  resources :estados
+  resources :patrias
+  root 'estados#index'
+  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  get '/estados_por_patria' => 'estados#estados_por_patria'
+  get '/cidades_por_estado' => 'estados#cidades_por_estado'
+  post '/options' => 'estados#options'
+  post '/options' => 'siglas_por_estado'
+
+end

@@ -1,0 +1,138 @@
+<%= form_for(estado, remote: true) do |f| %>
+  <% if estado.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(estado.errors.count, "error") %> prohibited this estado from being saved:</h2>
+
+      <ul>
+      <% estado.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="field">
+    <%= f.label :País %>
+        <%= collection_select(:patria ,:id, Patria.all, :id, :nome, :include_blank => 'SELECT A COUNTRY') %>
+
+  </div>
+  <div class="field">
+    <label for="estado">Estado</label>
+    <!-- COMBO DE ESTADO VAZIA ESPERANDO PARA SER POPULADA -->
+    <select id="estado_id" name="state" class="form-control" style="width: 200px">
+      <option>Selecione um estado...</option>
+    </select>
+  </div>
+  <div class="field">
+    <%= f.label :sigla %>
+    <%= f.text_field :sigla, :class => 'form-control', :style=>"width: 200px"  %>
+  </div>
+  
+  <div class="field">
+    <label for="estado">Estado</label>
+    <!-- COMBO DE ESTADO VAZIA ESPERANDO PARA SER POPULADA -->
+    <select id="cidade_id" name="state" class="form-control" style="width: 200px">
+      <option>Selecione uma cidade...</option>
+    </select>
+  </div>
+ 
+  
+
+  
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
+
+
+<script>
+  // evento change do select
+  // toda vez que um item do select é clicado, o evento change é disparado
+  $('#patria_id').on('change', function() {
+
+    // ao disparar o evento change, conseguimos pegar o valor do item selecionado
+    $.ajax({
+      // fazemos uma chamada ajax para a rota rails passando como parâmetro o estado selecionado
+      url: "/estados_por_patria?patria_id=" + this.value
+    }).done(function(result) {
+      // assim que a chamada ajax terminar, podemos montar o select de cidades
+
+      // atualiza o primeiro item do select de estados
+      $("#estado_id option:first").text("Selecione Estado");
+
+      // percorre cada estado e adiciona no select de estados
+      for (var i = 0; i < result.length; i++) {
+        // adiciona cada didade no select através de um option
+        $('#estado_id').append($("<option></option>").attr("value", result[i].id).text(result[i].nome)); // => <option value='1'>Estado</option>
+      }
+    });
+  });
+</script>
+
+
+<script>
+  // Buscar cidades...
+  // evento change do select
+  // toda vez que um item do select é clicado, o evento change é disparado
+  $('#estado_id').on('change', function() {
+
+    // ao disparar o evento change, conseguimos pegar o valor do item selecionado
+    $.ajax({
+      // fazemos uma chamada ajax para a rota rails passando como parâmetro o estado selecionado
+      url: "/cidades_por_estado?estado_id=" + this.value
+    }).done(function(result) {
+      // assim que a chamada ajax terminar, podemos montar o select de cidades
+
+      // atualiza o primeiro item do select de cidades
+      $("#cidade_id option:first").text("Selecione");
+
+      // percorre cada cidade e adiciona no select de cidades
+      for (var i = 0; i < result.length; i++) {
+        // adiciona cada didade no select através de um option
+        $('#cidade_id').append($("<option></option>").attr("value", result[i].id).text(result[i].nome)); // => <option value='1'>Cidade</option>
+      }
+    });
+  });
+</script>
+
+<script>
+  // evento change do select
+  // toda vez que um item do select é clicado, o evento change é disparado
+  $('#patria_id').on('change', function() {
+
+    // ao disparar o evento change, conseguimos pegar o valor do item selecionado
+    $.ajax({
+      // fazemos uma chamada ajax para a rota rails passando como parâmetro o estado selecionado
+      url: "/siglas_por_estado?patria_id=" + this.value
+    }).done(function(result) {
+      // assim que a chamada ajax terminar, podemos montar o select de pratos
+      $('#patria_id option[value!="0"]').remove();
+      // atualiza o primeiro item do select de cidades
+      $("#patria_id option:first").text("Selecione");
+
+      // percorre cada cidade e adiciona no select de cidades
+      for (var i = 0; i < result.length; i++) {
+        // adiciona cada didade no select através de um option
+        $('#estado_id').append($("<option></option>").attr("value", result[i].id).text(result[i].sigla)); // => <option value='1'>pRATO</option>
+        $('#estado_sigla').append($("<option></option>").attr("value", result[i].id).text(result[i].sigla)); // => <option value='1'>pRATO</option>
+      }
+    });
+  });
+</script>
+
+
+
+<script>
+$(document).ready(function(){
+   $('#sigla_id').change(function(){
+       var value = $(this).val()
+       $.ajax({
+          type: 'POST',
+          url: 'options',
+          data: {id: value},
+          success: function(data){
+            $('#subsigla').html(data)
+          }
+       })
+   })
+})
+</script>

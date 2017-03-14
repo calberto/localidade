@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Patrias</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Nome</th>
+      <th>Sigla</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @patrias.each do |patria| %>
+      <tr>
+        <td><%= patria.nome %></td>
+        <td><%= patria.sigla %></td>
+        <td><%= link_to 'Show', patria %></td>
+        <td><%= link_to 'Edit', edit_patria_path(patria) %></td>
+        <td><%= link_to 'Destroy', patria, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Patria', new_patria_path %>

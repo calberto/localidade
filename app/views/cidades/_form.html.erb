@@ -1,0 +1,54 @@
+<%= form_for(cidade) do |f| %>
+  <% if cidade.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(cidade.errors.count, "error") %> prohibited this cidade from being saved:</h2>
+
+      <ul>
+      <% cidade.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+   <div class="field">
+    <%= f.label :estado_id %>
+    <%= f.number_field :estado_id %>
+  </div>
+
+
+  <div class="field">
+    <%= f.label :nome %>
+     <select id="cidade_id" name="cidade_id" class="form-control">
+              <option>Selecione um estado...</option>
+            </select>
+  </div>
+
+ 
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
+<script>
+  // evento change do select
+  // toda vez que um item do select é clicado, o evento change é disparado
+  $('#estado_id').on('change', function() {
+
+    // ao disparar o evento change, conseguimos pegar o valor do item selecionado
+    $.ajax({
+      // fazemos uma chamada ajax para a rota rails passando como parâmetro o estado selecionado
+      url: "/cidades_por_estado?estado_id=" + this.value
+    }).done(function(result) {
+      // assim que a chamada ajax terminar, podemos montar o select de cidades
+
+      // atualiza o primeiro item do select de cidades
+      $("#cidade_id option:first").text("Selecione");
+
+      // percorre cada cidade e adiciona no select de cidades
+      for (var i = 0; i < result.length; i++) {
+        // adiciona cada didade no select através de um option
+        $('#cidade_id').append($("<option></option>").attr("value", result[i].id).text(result[i].nome)); // => <option value='1'>Cidade</option>
+      }
+    });
+  });
+</script>

@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Nome:</strong>
+  <%= @patria.nome %>
+</p>
+
+<p>
+  <strong>Sigla:</strong>
+  <%= @patria.sigla %>
+</p>
+
+<%= link_to 'Edit', edit_patria_path(@patria) %> |
+<%= link_to 'Back', patrias_path %>
